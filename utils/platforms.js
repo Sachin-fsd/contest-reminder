@@ -15,14 +15,14 @@ const SUPPORTED_PLATFORMS = [
     logo: "/platforms/codeforces.svg",
     initials: "CF",
   },
-  {
-    id: "codechef",
-    name: "CodeChef",
-    color: "#5B4638",
-    gradient: "from-amber-700 to-stone-500",
-    logo: "/platforms/codechef.svg",
-    initials: "CC",
-  },
+  // {
+  //   id: "codechef",
+  //   name: "CodeChef",
+  //   color: "#5B4638",
+  //   gradient: "from-amber-700 to-stone-500",
+  //   logo: "/platforms/codechef.svg",
+  //   initials: "CC",
+  // },
   {
     id: "atcoder",
     name: "AtCoder",

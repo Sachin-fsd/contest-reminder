@@ -16,7 +16,6 @@
     "mailtrap": "latest",
     "mongoose": "latest",
     "next": "^16.2.10",
-    "nodemailer": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -1,4 +1,4 @@
-const { normalizeContest, getJson } = require('@/utils/contestUtils');
+const { normalizeContest, getJson } = require("@/utils/contestUtils");
 
 async function fetchLeetCodeContests() {
   const url = process.env.LEETCODE_API;
@@ -6,18 +6,17 @@ async function fetchLeetCodeContests() {
 
   try {
     const data = await getJson(url);
-    const rows = data.objects || data.contests || data.result || data || [];
+    const rows = data.objects || [];
 
-    return rows.map((c) =>
-      normalizeContest(c.host, {
-        title: c.event || c.title || c.name,
-        startTime: c.start || c.startTime || c.start_time,
-        duration: c.duration || c.durationSeconds,
-        url: c.href || c.url || c.link,
-      }),
-    );
+    return rows.map((c) => ({
+      platform: c.host,
+      title: c.event,
+      startTime: `${c.start}Z`,
+      duration: c.duration,
+      url: c.href,
+    }));
   } catch (error) {
-    console.error('Error fetching LeetCode contests:', error);
+    console.error("Error fetching LeetCode contests:", error);
     return [];
   }
 }

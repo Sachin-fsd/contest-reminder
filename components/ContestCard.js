@@ -19,7 +19,6 @@ export default function ContestCard({ contest }) {
     const meta = getPlatformMeta(contest.platform);
     const date = new Date(contest.startTime);
     const hostLabel = meta.label || "Unknown Host";
-
     return (
         <motion.article
             initial={{ opacity: 0, y: 18 }}

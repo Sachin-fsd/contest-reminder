@@ -11,11 +11,13 @@
     "amqplib": "latest",
     "axios": "latest",
     "bcryptjs": "latest",
+    "dotenv": "^17.4.2",
     "framer-motion": "latest",
     "jsonwebtoken": "latest",
     "mailtrap": "latest",
     "mongoose": "latest",
     "next": "^16.2.10",
+    "nodemailer": "^9.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

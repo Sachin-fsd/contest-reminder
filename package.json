@@ -7,6 +7,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@qatadaazzeh/atcoder-api": "^1.0.1",
+    "amqplib": "latest",
     "axios": "latest",
     "bcryptjs": "latest",
     "framer-motion": "latest",
@@ -16,12 +18,11 @@
     "next": "16.0.0",
     "nodemailer": "latest",
     "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "amqplib": "latest"
+    "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.17",
+    "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
-    "autoprefixer": "^10.4.20"
+    "tailwindcss": "^3.4.17"
   }
 }

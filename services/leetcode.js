@@ -1,9 +1,30 @@
 const { normalizeContest, getJson } = require('@/utils/contestUtils');
+
 async function fetchLeetCodeContests() {
   const url = process.env.LEETCODE_API;
   if (!url) return [];
-  const data = await getJson(url);
-  const rows = data.contests || data.result || data || [];
-  return rows.map(c => normalizeContest('leetcode', { title: c.title || c.name, startTime: c.startTime || c.start_time, duration: c.duration || c.durationSeconds, url: c.url || c.link }));
+
+  try {
+    const data = await getJson(url);
+    const rows = data.objects || data.contests || data.result || data || [];
+
+    return rows
+      .filter((c) => {
+        const host = `${c.host || ''} ${c.resource || ''}`.toLowerCase();
+        return host.includes('leetcode') || host.includes('leetcode.com');
+      })
+      .map((c) =>
+        normalizeContest('leetcode', {
+          title: c.event || c.title || c.name,
+          startTime: c.start || c.startTime || c.start_time,
+          duration: c.duration || c.durationSeconds,
+          url: c.href || c.url || c.link,
+        }),
+      );
+  } catch (error) {
+    console.error('Error fetching LeetCode contests:', error);
+    return [];
+  }
 }
+
 module.exports = fetchLeetCodeContests;

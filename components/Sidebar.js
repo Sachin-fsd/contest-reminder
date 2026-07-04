@@ -1,1 +1,12 @@
-export default function Sidebar(){ return <aside className="glass hidden w-64 rounded-3xl p-6 lg:block"><h2 className="font-bold">Platforms</h2><nav className="mt-5 space-y-3 text-slate-300"><p>LeetCode</p><p>Codeforces</p><p>CodeChef</p><p>AtCoder</p></nav></aside> }
+export default function Sidebar() {
+    return (
+        <aside className="glass hidden w-64 rounded-3xl p-6 lg:block">
+            <h2 className="font-bold">Platforms</h2>
+            <nav className="mt-5 space-y-3 text-slate-300">
+                <p>LeetCode</p>
+                <p>Codeforces</p>
+                <p>AtCoder</p>
+            </nav>
+        </aside>
+    );
+}

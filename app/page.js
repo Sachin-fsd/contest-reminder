@@ -1,2 +1,28 @@
-import Link from 'next/link';
-export default function Home(){ return <main className="grid min-h-screen place-items-center p-6"><section className="glass max-w-3xl rounded-3xl p-10 text-center"><h1 className="text-5xl font-black">Never miss a coding contest.</h1><p className="mx-auto mt-4 max-w-xl text-slate-300">A modern contest reminder dashboard with scheduled email notifications and scalable worker architecture.</p><div className="mt-8 flex justify-center gap-4"><Link className="rounded-xl bg-blue-600 px-6 py-3 font-bold" href="/register">Get started</Link><Link className="rounded-xl border border-slate-700 px-6 py-3" href="/login">Login</Link></div></section></main> }
+import Link from "next/link";
+export default function Home() {
+    return (
+        <main className="grid min-h-screen place-items-center p-6">
+            <section className="glass max-w-3xl rounded-3xl p-10 text-center">
+                <h1 className="text-5xl font-black">Never miss a coding contest.</h1>
+                <p className="mx-auto mt-4 max-w-xl text-slate-300">
+                    A modern contest reminder dashboard with scheduled email notifications
+                    and scalable worker architecture.
+                </p>
+                <div className="mt-8 flex justify-center gap-4">
+                    <Link
+                        className="rounded-xl bg-blue-600 px-6 py-3 font-bold"
+                        href="/register"
+                    >
+                        Get started
+                    </Link>
+                    <Link
+                        className="rounded-xl border border-slate-700 px-6 py-3"
+                        href="/login"
+                    >
+                        Login
+                    </Link>
+                </div>
+            </section>
+        </main>
+    );
+}

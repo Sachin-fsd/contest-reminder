@@ -1,2 +1,2 @@
-const { renderContestEmail } = require('@/lib/mail');
+const { renderContestEmail } = require("@/lib/mail");
 module.exports = renderContestEmail;

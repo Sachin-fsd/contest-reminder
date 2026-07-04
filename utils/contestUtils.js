@@ -1,23 +1,6 @@
 const axios = require("axios");
 const cache = new Map();
-const PLATFORM_META = {
-  leetcode: {
-    label: "LeetCode",
-    color: "from-yellow-500 to-orange-500",
-    logo: "LC",
-  },
-  codeforces: {
-    label: "Codeforces",
-    color: "from-blue-500 to-cyan-500",
-    logo: "CF",
-  },
-
-  atcoder: {
-    label: "AtCoder",
-    color: "from-slate-500 to-zinc-300",
-    logo: "AC",
-  },
-};
+const { PLATFORM_META } = require("@/utils/platforms");
 function normalizeContest(platform, item) {
   return {
     platform,

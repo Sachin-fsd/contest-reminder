@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/utils/auth";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import DashboardClient from "@/components/DashboardClient";
+import NotificationPreferencesCard from "@/components/NotificationPreferencesCard";
 export default async function DashboardPage() {
     const user = await getCurrentUser();
     if (!user) redirect("/login");
@@ -15,9 +16,10 @@ export default async function DashboardPage() {
                     <div className="mb-6 rounded-3xl bg-gradient-to-r from-blue-600/40 to-fuchsia-600/30 p-8">
                         <h2 className="text-4xl font-black">Upcoming coding contests</h2>
                         <p className="mt-2 text-slate-300">
-                            Track LeetCode, Codeforces, and AtCoder other platform's contests.
+                            Track LeetCode, Codeforces, CodeChef, and AtCoder contests. Notification preferences only control reminder emails.
                         </p>
                     </div>
+                    <NotificationPreferencesCard />
                     <DashboardClient />
                 </section>
             </div>

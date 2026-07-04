@@ -14,22 +14,38 @@ export default function NotificationPreferencesCard() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
+  const [hasMounted, setHasMounted] = useState(false);
 
   const selectedPlatforms = useMemo(
-    () => new Set(emailPreferences.platforms),
+    () => new Set(emailPreferences.platforms || []),
     [emailPreferences.platforms],
   );
 
   useEffect(() => {
+    setHasMounted(true);
+
+    let isActive = true;
     fetch("/api/notification-preferences")
       .then((response) => response.json())
       .then((data) => {
-        if (data.notificationPreferences?.email) {
-          setEmailPreferences(data.notificationPreferences.email);
+        if (isActive && data.notificationPreferences?.email) {
+          setEmailPreferences({
+            ...DEFAULT_EMAIL_PREFERENCES,
+            ...data.notificationPreferences.email,
+            platforms: data.notificationPreferences.email.platforms || DEFAULT_EMAIL_PREFERENCES.platforms,
+          });
         }
       })
-      .catch(() => setStatus("Unable to load notification preferences."))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (isActive) setStatus("Unable to load notification preferences.");
+      })
+      .finally(() => {
+        if (isActive) setLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   async function savePreferences(nextEmailPreferences) {
@@ -64,6 +80,19 @@ export default function NotificationPreferencesCard() {
     savePreferences({ ...emailPreferences, platforms });
   }
 
+  if (!hasMounted) {
+    return (
+      <aside className="glass mb-6 rounded-3xl p-6">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 w-32 rounded bg-white/10" />
+          <div className="h-6 w-48 rounded bg-white/10" />
+          <div className="h-4 w-full rounded bg-white/10" />
+          <div className="h-10 w-40 rounded bg-white/10" />
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="glass mb-6 rounded-3xl p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -80,7 +109,7 @@ export default function NotificationPreferencesCard() {
           <input
             type="checkbox"
             className="h-5 w-5 accent-blue-500"
-            checked={emailPreferences.enabled}
+            checked={Boolean(emailPreferences.enabled)}
             disabled={loading || saving}
             onChange={(event) => updateEnabled(event.target.checked)}
           />

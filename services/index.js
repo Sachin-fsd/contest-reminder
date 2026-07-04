@@ -1,9 +1,9 @@
 const { fetchWithCache, sortContests } = require('@/utils/contestUtils');
 const services = [
   require('./leetcode'),
-  require('./codeforces'),
+  // require('./codeforces'),
   // require('./codechef'),
-  require('./atcoder'),
+  // require('./atcoder'),
 ];
 
 async function fetchAllContests() {

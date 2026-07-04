@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "worker": "node worker/emailWorker.js",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "latest",
+    "bcryptjs": "latest",
+    "framer-motion": "latest",
+    "jsonwebtoken": "latest",
+    "mailtrap": "latest",
+    "mongoose": "latest",
+    "next": "16.0.0",
+    "nodemailer": "latest",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "amqplib": "latest"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.4.49",
+    "autoprefixer": "^10.4.20"
+  }
+}

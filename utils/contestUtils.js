@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cache = new Map();
-const { PLATFORM_META } = require("@/utils/platforms");
+const { PLATFORM_META, getPlatformMeta } = require("@/utils/platforms");
 function normalizeContest(platform, item) {
   return {
     platform,
@@ -35,6 +35,7 @@ async function getJson(url, config = {}) {
 }
 module.exports = {
   PLATFORM_META,
+  getPlatformMeta,
   normalizeContest,
   sortContests,
   withinNext24Hours,

@@ -9,12 +9,12 @@ async function fetchLeetCodeContests() {
     const rows = data.objects || data.contests || data.result || data || [];
 
     return rows
-      .filter((c) => {
-        const host = `${c.host || ''} ${c.resource || ''}`.toLowerCase();
-        return host.includes('leetcode') || host.includes('leetcode.com');
-      })
+      // .filter((c) => {
+      //   const host = `${c.host || ''} ${c.resource || ''}`.toLowerCase();
+      //   return host.includes('leetcode') || host.includes('leetcode.com');
+      // })
       .map((c) =>
-        normalizeContest('leetcode', {
+        normalizeContest(c.host, {
           title: c.event || c.title || c.name,
           startTime: c.start || c.startTime || c.start_time,
           duration: c.duration || c.durationSeconds,

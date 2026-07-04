@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { PLATFORM_META } from "@/utils/contestUtils";
+import { getPlatformMeta } from "@/utils/contestUtils";
 function formatDuration(seconds) {
     if (!seconds) return "TBA";
     const h = Math.floor(seconds / 3600);
@@ -16,8 +16,10 @@ function remaining(startTime) {
     return `${d}d ${h}h ${m}m`;
 }
 export default function ContestCard({ contest }) {
-    const meta = PLATFORM_META[contest.platform] || {};
+    const meta = getPlatformMeta(contest.platform);
     const date = new Date(contest.startTime);
+    const hostLabel = meta.label || "Unknown Host";
+    console.log({ meta }, contest)
     return (
         <motion.article
             initial={{ opacity: 0, y: 18 }}
@@ -29,11 +31,20 @@ export default function ContestCard({ contest }) {
             />
             <div className="p-6">
                 <div className="mb-5 flex items-center gap-3">
-                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-900 font-black">
-                        {meta.logo}
+                    <div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-slate-900 ring-1 ring-white/10">
+                        {meta.logoPath ? (
+                            <img
+                                src={meta.logoPath}
+                                alt={`${hostLabel} logo`}
+                                className="h-8 w-8 object-contain"
+                            />
+                        ) : (
+                            <span className="text-sm font-black text-white">{meta.logo}</span>
+                        )}
                     </div>
-                    <div>
-                        <p className="text-sm text-slate-400">{meta.label}</p>
+                    <div className="min-w-0">
+                        {/* <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Host</p> */}
+                        <p className="text-sm font-semibold text-slate-200">{hostLabel}</p>
                         <h3 className="line-clamp-2 text-xl font-bold">{contest.title}</h3>
                     </div>
                 </div>

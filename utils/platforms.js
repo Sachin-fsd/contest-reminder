@@ -1,6 +1,6 @@
 const SUPPORTED_PLATFORMS = [
   {
-    id: "leetcode",
+    id: "leetcode.com",
     name: "LeetCode",
     color: "#FFA116",
     gradient: "from-yellow-500 to-orange-500",
@@ -24,12 +24,20 @@ const SUPPORTED_PLATFORMS = [
   //   initials: "CC",
   // },
   {
-    id: "atcoder",
+    id: "atcoder.jp",
     name: "AtCoder",
     color: "#000000",
     gradient: "from-slate-500 to-zinc-300",
     logo: "/platforms/atcoder.svg",
     initials: "AC",
+  },
+  {
+    id: "codechef",
+    name: "CodeChef",
+    color: "#5B4638",
+    gradient: "from-amber-700 to-stone-500",
+    logo: "/platforms/codechef.svg",
+    initials: "CC",
   },
 ];
 
@@ -50,6 +58,27 @@ function isSupportedPlatform(platformId) {
   return SUPPORTED_PLATFORM_IDS.includes(platformId);
 }
 
+function getPlatformMeta(platformId) {
+  const normalizedId = String(platformId || "").toLowerCase();
+  if (PLATFORM_META[normalizedId]) {
+    return PLATFORM_META[normalizedId];
+  }
+
+  const fallbackLabel = normalizedId
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(" ");
+
+  return {
+    label: fallbackLabel || "Unknown Host",
+    color: "from-slate-500 to-slate-400",
+    brandColor: "#64748b",
+    logo: (fallbackLabel || "?").slice(0, 2).toUpperCase(),
+    logoPath: null,
+  };
+}
+
 function filterSupportedPlatformIds(platformIds) {
   return Array.from(new Set(platformIds)).filter(isSupportedPlatform);
 }
@@ -59,5 +88,6 @@ module.exports = {
   SUPPORTED_PLATFORM_IDS,
   PLATFORM_META,
   isSupportedPlatform,
+  getPlatformMeta,
   filterSupportedPlatformIds,
 };

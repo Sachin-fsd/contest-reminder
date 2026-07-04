@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { SUPPORTED_PLATFORM_IDS } = require("@/utils/platforms");
 const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true, maxlength: 80 },
@@ -15,7 +14,7 @@ const UserSchema = new mongoose.Schema(
     notificationPreferences: {
       email: {
         enabled: { type: Boolean, default: true },
-        platforms: { type: [String], default: () => SUPPORTED_PLATFORM_IDS },
+        platforms: { type: [String], default: () => ["leetcode", "codeforces"] },
         reminderBeforeHours: { type: Number, default: 24 },
       },
     },

@@ -21,22 +21,22 @@ const platforms = [
   },
   {
     name: "CodeChef",
-    logo: "/platforms/codechef.svg",
+    logo: "https://img.icons8.com/?size=100&id=Wq4dyyhFKRz6&format=png&color=000000",
     color: "#5B4638",
   },
   {
     name: "HackerRank",
-    logo: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/hackerrank.svg",
+    logo: "https://img.icons8.com/?size=100&id=HSqTN92Y0X51&format=png&color=000000",
     color: "#2EC866",
   },
   {
     name: "Kaggle",
-    logo: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kaggle.svg",
+    logo: "https://img.icons8.com/?size=100&id=1iP83OYM1FL-&format=png&color=000000",
     color: "#20BEFF",
   },
   {
     name: "NowCoder",
-    logo: "https://www.nowcoder.com/favicon.ico",
+    logo: "https://img.icons8.com/?size=100&id=87158&format=png&color=000000",
     color: "#00C853",
   },
   {
@@ -46,12 +46,12 @@ const platforms = [
   },
   {
     name: "Kattis",
-    logo: "https://open.kattis.com/images/kattis.png",
+    logo: "https://open.kattis.com/images/site-logo?v=0a3f6018aacf449381741e45cf0ff6ba",
     color: "#003D5B",
   },
   {
     name: "Code360",
-    logo: "https://files.codingninjas.in/favicon.ico",
+    logo: "https://www.code360.io/web-hosting/img/logo-c360-s.png",
     color: "#FF6B00",
   },
   {
@@ -61,7 +61,7 @@ const platforms = [
   },
   {
     name: "Cups Online",
-    logo: "https://cups.online/favicon.ico",
+    logo: "https://cups.online/static/dist/cups/icons/cup.svg",
     color: "#DC2626",
   },
 ];
@@ -124,6 +124,7 @@ export default function PlatformStrip() {
           speed={45}
           pauseOnHover
           gradient={false}
+          className="p-7"
         >
           {platforms.concat(platforms).map((platform, index) => (
             <PlatformCard
@@ -165,7 +166,7 @@ function PlatformCard({ platform }) {
       <div className="group flex h-36 w-56 flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-300 hover:border-cyan-500/40 hover:bg-white/[0.07] hover:shadow-[0_0_60px_rgba(6,182,212,.18)]">
 
         <div
-          className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-white"
+          className=" flex h-16 w-16 items-center justify-center rounded-2xl bg-white"
           style={{
             boxShadow: `0 0 25px ${platform.color}40`,
           }}

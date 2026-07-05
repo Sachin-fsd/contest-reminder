@@ -45,7 +45,7 @@ const resourceLinks = [
 const socialLinks = [
   {
     icon: "https://img.icons8.com/?size=100&id=12598&format=png&color=000000",
-    href: "https://github.com",
+    href: "https://github.com/Sachin-fsd",
   },
   {
     icon: "https://img.icons8.com/?size=100&id=6Fsj3rv2DCmG&format=png&color=000000",
@@ -53,7 +53,7 @@ const socialLinks = [
   },
   {
     icon: "https://img.icons8.com/?size=100&id=447&format=png&color=000000",
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/realsachin/",
   },
 ];
 

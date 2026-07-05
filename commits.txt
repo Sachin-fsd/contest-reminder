@@ -1,0 +1,13 @@
+| Type       | Purpose                                      | Example                                 |
+| ---------- | -------------------------------------------- | --------------------------------------- |
+| `feat`     | New feature                                  | `feat: add user authentication`         |
+| `fix`      | Bug fix                                      | `fix: resolve login timeout issue`      |
+| `docs`     | Documentation only                           | `docs: update installation guide`       |
+| `style`    | Formatting (no code logic changes)           | `style: format code with prettier`      |
+| `refactor` | Code restructuring without changing behavior | `refactor: simplify payment validation` |
+| `perf`     | Performance improvement                      | `perf: optimize database queries`       |
+| `test`     | Add or update tests                          | `test: add unit tests for auth service` |
+| `build`    | Build system or dependencies                 | `build: upgrade webpack to v6`          |
+| `ci`       | CI/CD configuration                          | `ci: add GitHub Actions workflow`       |
+| `chore`    | Maintenance tasks                            | `chore: update dependencies`            |
+| `revert`   | Revert a previous commit                     | `revert: revert "feat: add dark mode"`  |

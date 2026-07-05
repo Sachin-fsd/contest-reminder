@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
     notificationPreferences: {
       email: {
         enabled: { type: Boolean, default: true },
-        platforms: { type: [String], default: () => ["leetcode", "codeforces"] },
+        platforms: { type: [String], default: () => ["leetcode.com", "codeforces.com"] },
         reminderBeforeHours: { type: Number, default: 24 },
       },
     },

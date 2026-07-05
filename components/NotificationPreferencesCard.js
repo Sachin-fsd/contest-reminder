@@ -5,7 +5,7 @@ import { SUPPORTED_PLATFORMS } from "@/utils/platforms";
 
 const DEFAULT_EMAIL_PREFERENCES = {
   enabled: true,
-  platforms: SUPPORTED_PLATFORMS.map((platform) => platform.id),
+  platforms: [],
   reminderBeforeHours: 24,
 };
 

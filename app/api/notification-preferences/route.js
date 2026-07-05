@@ -40,6 +40,7 @@ async function findCurrentUser() {
 
 export async function GET() {
   const user = await findCurrentUser();
+
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

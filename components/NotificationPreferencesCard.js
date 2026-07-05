@@ -28,9 +28,9 @@ export default function NotificationPreferencesCard() {
     fetch("/api/notification-preferences")
       .then((response) => response.json())
       .then((data) => {
+
         if (isActive && data.notificationPreferences?.email) {
           setEmailPreferences({
-            ...DEFAULT_EMAIL_PREFERENCES,
             ...data.notificationPreferences.email,
             platforms: data.notificationPreferences.email.platforms || DEFAULT_EMAIL_PREFERENCES.platforms,
           });

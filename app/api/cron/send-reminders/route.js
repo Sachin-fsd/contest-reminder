@@ -23,6 +23,7 @@ function getEmailPreferences(user) {
 }
 
 export async function POST(req) {
+
   if (req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json(
       { success: false, message: "Unauthorized" },

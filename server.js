@@ -8,22 +8,18 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASS
-    }
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
 router.get("/check-contests", async (req, res) => {
-
     try {
-
         const contests = [];
 
         // ---------------- LeetCode ----------------
 
-        const lc = await axios.post(
-            "https://leetcode.com/graphql",
-            {
-                query: `
+        const lc = await axios.post("https://leetcode.com/graphql", {
+            query: `
                 {
                   allContests {
                     title
@@ -32,41 +28,32 @@ router.get("/check-contests", async (req, res) => {
                     duration
                   }
                 }
-                `
-            }
-        );
+                `,
+        });
 
-        lc.data.data.allContests.forEach(c => {
-
+        lc.data.data.allContests.forEach((c) => {
             contests.push({
                 platform: "LeetCode",
                 name: c.title,
                 start: new Date(c.startTime * 1000),
-                duration: c.duration
+                duration: c.duration,
             });
-
         });
-
 
         // ---------------- Codeforces ----------------
 
-        const cf = await axios.get(
-            "https://codeforces.com/api/contest.list"
-        );
+        const cf = await axios.get("https://codeforces.com/api/contest.list");
 
         cf.data.result
-            .filter(c => c.phase === "BEFORE")
-            .forEach(c => {
-
+            .filter((c) => c.phase === "BEFORE")
+            .forEach((c) => {
                 contests.push({
                     platform: "Codeforces",
                     name: c.name,
                     start: new Date(c.startTimeSeconds * 1000),
-                    duration: c.durationSeconds
+                    duration: c.durationSeconds,
                 });
-
             });
-
 
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -74,52 +61,42 @@ router.get("/check-contests", async (req, res) => {
         const tomorrowDate = tomorrow.toDateString();
 
         const contestsTomorrow = contests.filter(
-            c => c.start.toDateString() === tomorrowDate
+            (c) => c.start.toDateString() === tomorrowDate,
         );
 
-
         if (contestsTomorrow.length) {
-
             let text = "";
 
-            contestsTomorrow.forEach(c => {
-
+            contestsTomorrow.forEach((c) => {
                 text += `
 Platform : ${c.platform}
 Contest  : ${c.name}
 Starts   : ${c.start.toLocaleString("en-IN", {
-                    timeZone: "Asia/Kolkata"
+                    timeZone: "Asia/Kolkata",
                 })}
 
 `;
-
             });
 
             await transporter.sendMail({
                 from: process.env.EMAIL,
                 to: "yourmail@gmail.com",
                 subject: "Contest Tomorrow 🚀",
-                text
+                text,
             });
-
         }
 
         res.json({
             success: true,
-            contestsTomorrow
+            contestsTomorrow,
         });
-
-    }
-    catch (err) {
-
+    } catch (err) {
         console.error(err);
 
         res.status(500).json({
-            success: false
+            success: false,
         });
-
     }
-
 });
 
 export default router;

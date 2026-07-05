@@ -6,6 +6,7 @@ import DashboardClient from "@/components/DashboardClient";
 import NotificationPreferencesCard from "@/components/NotificationPreferencesCard";
 export default async function DashboardPage() {
     const user = await getCurrentUser();
+
     if (!user) redirect("/login");
     return (
         <main>

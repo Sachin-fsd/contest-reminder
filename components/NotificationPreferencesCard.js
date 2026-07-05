@@ -9,8 +9,10 @@ const DEFAULT_EMAIL_PREFERENCES = {
   reminderBeforeHours: 24,
 };
 
-export default function NotificationPreferencesCard() {
-  const [emailPreferences, setEmailPreferences] = useState(DEFAULT_EMAIL_PREFERENCES);
+export default function NotificationPreferencesCard({ initialPreferences }) {
+  const [emailPreferences, setEmailPreferences] = useState(
+    initialPreferences || DEFAULT_EMAIL_PREFERENCES,
+  );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
@@ -22,17 +24,23 @@ export default function NotificationPreferencesCard() {
   );
 
   useEffect(() => {
+    if (initialPreferences) {
+      setLoading(false);
+      setHasMounted(true);
+      return;
+    }
     setHasMounted(true);
 
     let isActive = true;
     fetch("/api/notification-preferences")
       .then((response) => response.json())
       .then((data) => {
-
         if (isActive && data.notificationPreferences?.email) {
           setEmailPreferences({
             ...data.notificationPreferences.email,
-            platforms: data.notificationPreferences.email.platforms || DEFAULT_EMAIL_PREFERENCES.platforms,
+            platforms:
+              data.notificationPreferences.email.platforms ||
+              DEFAULT_EMAIL_PREFERENCES.platforms,
           });
         }
       })
@@ -46,7 +54,7 @@ export default function NotificationPreferencesCard() {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [initialPreferences]);
 
   async function savePreferences(nextEmailPreferences) {
     setSaving(true);
@@ -58,7 +66,8 @@ export default function NotificationPreferencesCard() {
         body: JSON.stringify({ email: nextEmailPreferences }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Unable to save preferences");
+      if (!response.ok)
+        throw new Error(data.message || "Unable to save preferences");
       setEmailPreferences(data.notificationPreferences.email);
       setStatus("Notification preferences saved.");
     } catch (error) {
@@ -102,7 +111,8 @@ export default function NotificationPreferencesCard() {
           </p>
           <h3 className="mt-2 text-2xl font-black">Notification Preferences</h3>
           <p className="mt-2 max-w-2xl text-sm text-slate-300">
-            Choose which platforms should generate reminder emails. These settings do not filter the dashboard contests.
+            Choose which platforms should generate reminder emails. These
+            settings do not filter the dashboard contests.
           </p>
         </div>
         <label className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 font-semibold">
@@ -128,9 +138,14 @@ export default function NotificationPreferencesCard() {
               className="h-5 w-5 accent-blue-500"
               checked={selectedPlatforms.has(platform.id)}
               disabled={loading || saving || !emailPreferences.enabled}
-              onChange={(event) => updatePlatform(platform.id, event.target.checked)}
+              onChange={(event) =>
+                updatePlatform(platform.id, event.target.checked)
+              }
             />
-            <span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black" style={{ backgroundColor: platform.color }}>
+            <span
+              className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black"
+              style={{ backgroundColor: platform.color }}
+            >
               {platform.initials}
             </span>
             <span className="font-semibold">{platform.name}</span>
@@ -139,7 +154,8 @@ export default function NotificationPreferencesCard() {
       </div>
 
       <p className="mt-4 text-sm text-slate-400">
-        Reminder timing: {emailPreferences.reminderBeforeHours} hours before each selected contest.
+        Reminder timing: {emailPreferences.reminderBeforeHours} hours before
+        each selected contest.
       </p>
       {status && <p className="mt-3 text-sm text-blue-200">{status}</p>}
     </aside>

@@ -28,7 +28,7 @@ const SUPPORTED_PLATFORMS = [
     name: "CodeChef",
     color: "#5B4638",
     gradient: "from-amber-700 to-stone-500",
-    logo: "/platforms/codechef.svg",
+    logo: "https://img.icons8.com/?size=100&id=Wq4dyyhFKRz6&format=png&color=000000",
     initials: "CC",
   },
 
@@ -45,7 +45,7 @@ const SUPPORTED_PLATFORMS = [
     name: "Kattis",
     color: "#003D5B",
     gradient: "from-sky-700 to-blue-500",
-    logo: "https://open.kattis.com/images/kattis.png",
+    logo: "https://open.kattis.com/images/site-logo?v=0a3f6018aacf449381741e45cf0ff6ba",
     initials: "KT",
   },
   {
@@ -53,7 +53,7 @@ const SUPPORTED_PLATFORMS = [
     name: "NowCoder",
     color: "#00C853",
     gradient: "from-green-500 to-lime-500",
-    logo: "https://www.nowcoder.com/favicon.ico",
+    logo: "https://img.icons8.com/?size=100&id=87158&format=png&color=000000",
     initials: "NC",
   },
   {
@@ -61,7 +61,7 @@ const SUPPORTED_PLATFORMS = [
     name: "Code360",
     color: "#FF6B00",
     gradient: "from-orange-500 to-red-500",
-    logo: "https://files.codingninjas.in/favicon.ico",
+    logo: "https://www.code360.io/web-hosting/img/logo-c360-s.png",
     initials: "C3",
   },
   {
@@ -77,7 +77,7 @@ const SUPPORTED_PLATFORMS = [
     name: "Universal Online Judge",
     color: "#6B21A8",
     gradient: "from-purple-600 to-violet-700",
-    logo: "https://uoj.ac/favicon.ico",
+    logo: "https://cups.online/static/dist/cups/icons/cup.svg",
     initials: "UJ",
   },
   {

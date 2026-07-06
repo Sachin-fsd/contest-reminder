@@ -40,7 +40,7 @@ export async function POST(req) {
       const emailPreferences = getEmailPreferences(user);
       if (!emailPreferences.enabled) return [];
 
-      return contests
+      let x = contests
         .filter(
           (contest) =>
             emailPreferences.platforms.includes(contest.platform) &&
@@ -51,7 +51,10 @@ export async function POST(req) {
           userName: user.name,
           contest,
         }));
+      console.log(x);
+      return x
     });
+
 
     const results = await Promise.allSettled(
       emailJobs.map((job) => sendContestReminder(job)),

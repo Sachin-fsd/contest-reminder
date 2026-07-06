@@ -2,7 +2,10 @@ const { normalizeContest, getJson } = require("@/utils/contestUtils");
 
 async function fetchLeetCodeContests() {
   const url = process.env.LEETCODE_API;
-  if (!url) return [];
+  if (!url) {
+    console.warn('LEETCODE_API is not set; skipping contest fetch.');
+    return [];
+  }
 
   try {
     const data = await getJson(url);

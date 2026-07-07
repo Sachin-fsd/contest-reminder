@@ -12,7 +12,8 @@ const DEFAULT = {
   reminderBeforeHours: 24,
 };
 
-const REMINDER_OPTIONS = [1, 2, 6, 12, 24, 48];
+const REMINDER_OPTIONS = [24];
+// const REMINDER_OPTIONS = [1, 2, 6, 12, 24, 48];
 
 export default function NotificationCard({ initialPreferences }) {
   const [preferences, setPreferences] = useState(initialPreferences || DEFAULT);
@@ -165,7 +166,7 @@ export default function NotificationCard({ initialPreferences }) {
             <button
               key={hour}
               disabled={!preferences.enabled}
-              onClick={() => toggleReminder(hour)}
+              // onClick={() => toggleReminder(hour)}
               className={`rounded-xl border px-5 py-3 transition
                 ${preferences.reminderBeforeHours.includes(hour)
                   ? "border-cyan-500 bg-cyan-500/20"

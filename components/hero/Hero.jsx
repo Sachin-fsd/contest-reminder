@@ -29,9 +29,9 @@ export default function Hero() {
       {/* Background Glow */}
 
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-20 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
+        <div className="absolute left-1/2 top-20 h-130 w-130 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
 
-        <div className="absolute left-1/2 top-40 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[120px]" />
+        <div className="absolute left-1/2 top-40 h-130 w-130 -translate-x-1/2 rounded-full bg-blue-500/10 blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-5xl px-6">

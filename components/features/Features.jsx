@@ -47,25 +47,26 @@ const features = [
       "Track all upcoming contests from a single beautiful dashboard.",
     icon: BarChart3,
     gradient: "from-pink-500 to-rose-500",
-    wide: true,
   },
   {
     title: "Fast & Secure",
     description: "Built with Next.js, scalable APIs and secure authentication.",
     icon: Shield,
     gradient: "from-indigo-500 to-blue-600",
+    wide: true,
   },
   {
     title: "Lightning Fast",
     description: "Optimized frontend with instant page loads.",
     icon: Zap,
     gradient: "from-yellow-400 to-orange-500",
+    wide: true,
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="relative py-32">
+    <section id="features" className="relative py-20">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div
           initial={{

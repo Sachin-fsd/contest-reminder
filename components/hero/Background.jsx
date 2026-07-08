@@ -117,7 +117,7 @@ export default function Background() {
 
       {/* Top Beam */}
 
-      <motion.div
+      {/* <motion.div
         animate={{
           opacity: [.3, .7, .3],
         }}
@@ -126,11 +126,11 @@ export default function Background() {
           duration: 5,
         }}
         className="absolute left-1/2 top-0 h-[600px] w-[2px] -translate-x-1/2 bg-gradient-to-b from-cyan-400 via-blue-500 to-transparent"
-      />
+      /> */}
 
       {/* Left Beam */}
 
-      <motion.div
+      {/* <motion.div
         animate={{
           opacity: [.2, .5, .2],
         }}
@@ -139,11 +139,11 @@ export default function Background() {
           duration: 6,
         }}
         className="absolute left-20 top-0 h-[500px] w-[1px] bg-gradient-to-b from-blue-500 to-transparent"
-      />
+      /> */}
 
       {/* Right Beam */}
 
-      <motion.div
+      {/* <motion.div
         animate={{
           opacity: [.2, .6, .2],
         }}
@@ -152,7 +152,7 @@ export default function Background() {
           duration: 8,
         }}
         className="absolute right-32 top-0 h-[500px] w-[1px] bg-gradient-to-b from-violet-500 to-transparent"
-      />
+      /> */}
 
       {/* Noise */}
 

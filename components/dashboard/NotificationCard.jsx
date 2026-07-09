@@ -9,7 +9,7 @@ import { SUPPORTED_PLATFORMS } from "@/utils/platforms";
 const DEFAULT = {
   enabled: true,
   platforms: [],
-  reminderBeforeHours: 24,
+  reminderBeforeHours: [24],
 };
 
 const REMINDER_OPTIONS = [24];

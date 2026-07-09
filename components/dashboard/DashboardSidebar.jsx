@@ -114,10 +114,9 @@ export default function DashboardSidebar({ active = "dashboard" }) {
                   py-4
                   transition
 
-                  ${
-                    item.id === active
-                      ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30"
-                      : "hover:bg-white/5"
+                  ${item.id === active
+                    ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30"
+                    : "hover:bg-white/5"
                   }
                 `}
               >
@@ -137,11 +136,11 @@ export default function DashboardSidebar({ active = "dashboard" }) {
 
       {/* Divider */}
 
-      <div className="mx-6 my-2 h-px bg-white/10" />
+      {/* <div className="mx-6 my-2 h-px bg-white/10" /> */}
 
       {/* Platforms */}
 
-      {!collapsed && (
+      {/* {!collapsed && (
         <>
           <div className="px-6 pt-4">
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-400">
@@ -198,7 +197,7 @@ export default function DashboardSidebar({ active = "dashboard" }) {
             </div>
           </div>
         </>
-      )}
+      )} */}
     </aside>
   );
 }

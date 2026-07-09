@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import DashboardStats from "./DashboardStats";
 // import ContestGrid from "./ContestGrid";
 import Loader from "@/components/Loader";
-import DashboardHero from "@/omponents/dashboard/DashboardHero";
+import DashboardHero from "@/components/dashboard/DashboardHero";
 import NotificationCard from "./NotificationCard";
 import ContestGrid from "./ContestGrid";
 

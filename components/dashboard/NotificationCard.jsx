@@ -1,32 +1,71 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Bell, Clock3, CheckCircle2, Loader2 } from "lucide-react";
+import { Bell, Calendar, Clock3, CheckCircle2, Loader2 } from "lucide-react";
 
 import { SUPPORTED_PLATFORMS } from "@/utils/platforms";
 
 const DEFAULT = {
   enabled: true,
   platforms: [],
-  reminderBeforeHours: [24],
+  reminderBeforeHours: 24,
+};
+
+const DEFAULT_CALENDAR = {
+  enabled: false,
+  connected: false,
+  reminderMinutesBeforeEvent: 30,
 };
 
 const REMINDER_OPTIONS = [24];
 // const REMINDER_OPTIONS = [1, 2, 6, 12, 24, 48];
 
-export default function NotificationCard({ initialPreferences }) {
+export default function NotificationCard({ initialPreferences, initialCalendarPreferences }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [preferences, setPreferences] = useState(initialPreferences || DEFAULT);
 
   const [saving, setSaving] = useState(false);
 
   const [status, setStatus] = useState("");
 
+  const [calendarPrefs, setCalendarPrefs] = useState(initialCalendarPreferences || DEFAULT_CALENDAR);
+
+  const [savingCalendar, setSavingCalendar] = useState(false);
+
+  const [calendarStatus, setCalendarStatus] = useState("");
+
   useEffect(() => {
     if (initialPreferences) {
       setPreferences(initialPreferences);
     }
   }, [initialPreferences]);
+
+  useEffect(() => {
+    if (initialCalendarPreferences) {
+      setCalendarPrefs(initialCalendarPreferences);
+    }
+  }, [initialCalendarPreferences]);
+
+  // After the OAuth round trip, the callback route redirects back here as
+  // /dashboard?calendar=connected (or ?calendar=error&reason=...). Surface a
+  // message once, then strip the query params so a refresh doesn't repeat it.
+  useEffect(() => {
+    const calendarParam = searchParams.get("calendar");
+    if (!calendarParam) return;
+
+    if (calendarParam === "connected") {
+      setCalendarPrefs((prev) => ({ ...prev, connected: true, enabled: true }));
+      setCalendarStatus("Google Calendar connected.");
+    } else if (calendarParam === "error") {
+      setCalendarStatus("Couldn't connect Google Calendar. Please try again.");
+    }
+
+    router.replace("/dashboard");
+  }, [searchParams, router]);
 
   const selected = useMemo(
     () => new Set(preferences.platforms),
@@ -104,6 +143,61 @@ export default function NotificationCard({ initialPreferences }) {
       ...preferences,
       reminderBeforeHours: reminders,
     });
+  }
+
+  async function toggleCalendarEnabled() {
+    if (!calendarPrefs.connected) {
+      window.location.href = "/api/auth/google";
+      return;
+    }
+
+    const previous = calendarPrefs;
+    const next = { ...calendarPrefs, enabled: !calendarPrefs.enabled };
+
+    setCalendarPrefs(next);
+    setSavingCalendar(true);
+    setCalendarStatus("");
+
+    try {
+      const res = await fetch("/api/notification-preferences", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calendar: { enabled: next.enabled } }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Unable to save.");
+
+      setCalendarPrefs(data.notificationPreferences.calendar);
+    } catch (e) {
+      setCalendarPrefs(previous);
+      setCalendarStatus(e.message);
+    } finally {
+      setSavingCalendar(false);
+    }
+  }
+
+  async function disconnectCalendar() {
+    const confirmed = window.confirm(
+      "Disconnect Google Calendar? Future contests won't be added automatically.",
+    );
+    if (!confirmed) return;
+
+    setSavingCalendar(true);
+    setCalendarStatus("");
+
+    try {
+      const res = await fetch("/api/auth/google/disconnect", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Unable to disconnect.");
+
+      setCalendarPrefs({ ...DEFAULT_CALENDAR });
+      setCalendarStatus("Google Calendar disconnected.");
+    } catch (e) {
+      setCalendarStatus(e.message);
+    } finally {
+      setSavingCalendar(false);
+    }
   }
 
   return (
@@ -227,6 +321,75 @@ export default function NotificationCard({ initialPreferences }) {
             );
           })}
         </div>
+      </div>
+
+      {/* Google Calendar Sync */}
+
+      <div className="mt-10 border-t border-white/10 pt-8">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Calendar size={18} className="text-cyan-400" />
+            <h3 className="font-semibold">Google Calendar Sync</h3>
+          </div>
+
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${calendarPrefs.connected
+                ? "bg-emerald-500/15 text-emerald-300"
+                : "bg-white/10 text-slate-400"
+              }`}
+          >
+            {calendarPrefs.connected ? "Connected" : "Not connected"}
+          </span>
+        </div>
+
+        <p className="mb-5 max-w-2xl text-sm text-slate-400">
+          When enabled, each reminder above also creates an event on your
+          Google Calendar with a {calendarPrefs.reminderMinutesBeforeEvent || 30}-minute
+          popup reminder.
+        </p>
+
+        {calendarPrefs.connected ? (
+          <div className="flex flex-wrap items-center gap-4">
+            <button
+              onClick={toggleCalendarEnabled}
+              disabled={savingCalendar}
+              className={`relative h-12 w-24 rounded-full transition ${calendarPrefs.enabled ? "bg-cyan-500" : "bg-slate-700"
+                }`}
+            >
+              <motion.div
+                layout
+                className="absolute top-1 h-10 w-10 rounded-full bg-white"
+                style={{
+                  left: calendarPrefs.enabled ? "52px" : "4px",
+                }}
+              />
+            </button>
+
+            <span className="text-sm text-slate-400">
+              {calendarPrefs.enabled ? "Syncing to calendar" : "Calendar sync paused"}
+            </span>
+
+            <button
+              onClick={disconnectCalendar}
+              disabled={savingCalendar}
+              className="ml-auto rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-red-500/50 hover:text-red-300"
+            >
+              Disconnect
+            </button>
+          </div>
+        ) : (
+          <a
+            href="/api/auth/google"
+            className="inline-flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 font-semibold text-cyan-300 transition hover:bg-cyan-500/20"
+          >
+            <Calendar size={18} />
+            Connect Google Calendar
+          </a>
+        )}
+
+        {calendarStatus && (
+          <p className="mt-4 text-sm text-blue-200">{calendarStatus}</p>
+        )}
       </div>
 
       {/* Footer */}

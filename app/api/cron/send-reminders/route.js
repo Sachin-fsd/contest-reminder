@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 import { sendContestReminder } from "@/lib/mail";
+import { syncContestToCalendar } from "@/lib/googleCalendar";
 import { fetchAllContests } from "@/services";
 import { SUPPORTED_PLATFORM_IDS } from "@/utils/platforms";
 
@@ -29,14 +30,20 @@ function isWithinReminderWindow(contest, reminderBeforeHours) {
   return start >= now && start <= now + reminderBeforeHours * 60 * 60 * 1000;
 }
 
-function getEmailPreferences(user) {
+// Platform + timing preferences are shared across channels: whichever
+// contests are "due" for a user's email also decide when they're due for
+// their calendar. Email and calendar are still independently enabled/disabled.
+function getReminderPreferences(user) {
   const email = user.notificationPreferences?.email || {};
+  const calendar = user.notificationPreferences?.calendar || {};
+
   return {
-    enabled: email.enabled !== false,
     platforms: Array.isArray(email.platforms) && email.platforms.length
       ? email.platforms
       : [...SUPPORTED_PLATFORM_IDS],
     reminderBeforeHours: Number(email.reminderBeforeHours) || 24,
+    emailEnabled: email.enabled !== false,
+    calendarEnabled: calendar.enabled === true && user.googleCalendar?.connected === true,
   };
 }
 
@@ -52,7 +59,10 @@ export async function POST(req) {
   try {
     await connectDB();
     const contests = await fetchAllContests();
-    const users = await User.find({}, "email name notificationPreferences").lean();
+    const users = await User.find(
+      {},
+      "email name notificationPreferences googleCalendar.connected",
+    ).lean();
 
     if (!contests.length) {
       console.warn("Reminder cron found no contests. Check the contest feed and environment variables.");
@@ -62,27 +72,49 @@ export async function POST(req) {
       console.warn("Reminder cron found no users to notify.");
     }
 
-    const emailJobs = users.flatMap((user) => {
-      const emailPreferences = getEmailPreferences(user);
-      if (!emailPreferences.enabled) return [];
+    const emailJobs = [];
+    const calendarJobs = [];
+
+    for (const user of users) {
+      const preferences = getReminderPreferences(user);
+      if (!preferences.emailEnabled && !preferences.calendarEnabled) continue;
 
       const matchingContests = contests.filter(
         (contest) =>
-          matchesPreferredPlatform(contest.platform, emailPreferences.platforms) &&
-          isWithinReminderWindow(contest, emailPreferences.reminderBeforeHours),
+          matchesPreferredPlatform(contest.platform, preferences.platforms) &&
+          isWithinReminderWindow(contest, preferences.reminderBeforeHours),
       );
 
-      return matchingContests.map((contest) => ({
-        userEmail: user.email,
-        userName: user.name,
-        contest,
-      }));
-    });
+      for (const contest of matchingContests) {
+        if (preferences.emailEnabled) {
+          emailJobs.push({ userEmail: user.email, userName: user.name, contest });
+        }
+        if (preferences.calendarEnabled) {
+          calendarJobs.push({ userId: user._id, contest });
+        }
+      }
+    }
 
-    const results = await Promise.allSettled(
-      emailJobs.map((job) => sendContestReminder(job)),
-    );
-    const emailsSent = results.filter((result) => result.status === "fulfilled").length;
+    const [emailResults, calendarResults] = await Promise.all([
+      Promise.allSettled(emailJobs.map((job) => sendContestReminder(job))),
+      Promise.allSettled(
+        calendarJobs.map((job) => syncContestToCalendar(job.userId, job.contest)),
+      ),
+    ]);
+
+    const emailsSent = emailResults.filter((result) => result.status === "fulfilled").length;
+
+    const calendarEventsCreated = calendarResults.filter(
+      (result) => result.status === "fulfilled" && result.value?.status === "created",
+    ).length;
+    const calendarEventsAlreadySynced = calendarResults.filter(
+      (result) => result.status === "fulfilled" && result.value?.status === "exists",
+    ).length;
+    const calendarFailures = calendarResults.filter((result) => result.status === "rejected");
+
+    calendarFailures.forEach((failure) => {
+      console.error("Calendar sync failed:", failure.reason?.message || failure.reason);
+    });
 
     return NextResponse.json({
       success: true,
@@ -91,6 +123,10 @@ export async function POST(req) {
       contestsFound: contests.length,
       usersChecked: users.length,
       emailJobsCreated: emailJobs.length,
+      calendarJobsCreated: calendarJobs.length,
+      calendarEventsCreated,
+      calendarEventsAlreadySynced,
+      calendarSyncFailures: calendarFailures.length,
     });
   } catch (error) {
     console.error("Reminder cron failed:", error);

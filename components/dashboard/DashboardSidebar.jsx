@@ -137,67 +137,6 @@ export default function DashboardSidebar({ active = "dashboard" }) {
       {/* Divider */}
 
       {/* <div className="mx-6 my-2 h-px bg-white/10" /> */}
-
-      {/* Platforms */}
-
-      {/* {!collapsed && (
-        <>
-          <div className="px-6 pt-4">
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-400">
-              Platforms
-            </h3>
-
-            <div className="space-y-3">
-              {SUPPORTED_PLATFORMS.map((platform) => (
-                <motion.div
-                  whileHover={{
-                    x: 5,
-                  }}
-                  key={platform.id}
-                  className="flex items-center justify-between rounded-2xl bg-white/5 p-3 transition hover:bg-white/10"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold text-white"
-                      style={{
-                        background: platform.color,
-                      }}
-                    >
-                      {platform.initials}
-                    </div>
-
-                    <span className="font-medium">{platform.name}</span>
-                  </div>
-
-                  <span className="rounded-full bg-cyan-500/10 px-2 py-1 text-xs text-cyan-300">
-                    Live
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-auto p-6">
-            <div className="rounded-3xl bg-gradient-to-br from-cyan-500/15 to-blue-600/15 p-5">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-xl bg-cyan-500/20 p-3">
-                  <Trophy className="text-cyan-400" />
-                </div>
-
-                <div>
-                  <h4 className="font-bold">{SUPPORTED_PLATFORMS.length}</h4>
-
-                  <p className="text-sm text-slate-400">Platforms</p>
-                </div>
-              </div>
-
-              <p className="text-sm leading-7 text-slate-400">
-                More coding platforms are added regularly.
-              </p>
-            </div>
-          </div>
-        </>
-      )} */}
     </aside>
   );
 }

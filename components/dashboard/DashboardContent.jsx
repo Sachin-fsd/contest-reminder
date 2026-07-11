@@ -16,6 +16,8 @@ export default function DashboardContent({ user }) {
 
   const [preferences, setPreferences] = useState(null);
 
+  const [calendarPreferences, setCalendarPreferences] = useState(null);
+
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -36,6 +38,8 @@ export default function DashboardContent({ user }) {
         setContests(contestData.contests || []);
 
         setPreferences(prefData.notificationPreferences?.email || null);
+
+        setCalendarPreferences(prefData.notificationPreferences?.calendar || null);
       } catch (err) {
         if (!active) return;
 
@@ -72,7 +76,10 @@ export default function DashboardContent({ user }) {
 
       <DashboardStats contests={contests} preferences={preferences} />
 
-      <NotificationCard initialPreferences={preferences} />
+      <NotificationCard
+        initialPreferences={preferences}
+        initialCalendarPreferences={calendarPreferences}
+      />
 
       <ContestGrid contests={contests} />
     </div>

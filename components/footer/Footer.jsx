@@ -34,11 +34,11 @@ const resourceLinks = [
   },
   {
     title: "Privacy",
-    href: "#",
+    href: "/privacy",
   },
   {
     title: "Terms",
-    href: "#",
+    href: "/terms",
   },
 ];
 
